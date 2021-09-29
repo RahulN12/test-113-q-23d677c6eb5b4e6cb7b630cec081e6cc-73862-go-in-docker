@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 	"strings"
 
@@ -60,7 +59,7 @@ func AddQuiz(c *gin.Context) {
 	}
 
 	responseQ := CreateQuiz(quiz)
-	c.IndentedJSON(http.StatusOK, responseQ)
+	c.IndentedJSON(201, responseQ)
 }
 
 func FetchQuestion(c *gin.Context) {
@@ -163,7 +162,7 @@ func AllQuestions(c *gin.Context) {
 		return
 	}
 
-	if responseQ == nil || len(responseQ) == 0 {
+	if len(responseQ.Name) == 0 {
 		c.PureJSON(404, gin.H{})
 		return
 	}

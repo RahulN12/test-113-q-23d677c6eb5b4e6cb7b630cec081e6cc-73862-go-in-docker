@@ -14,3 +14,9 @@ type Question struct {
 	Quiz          int    `json:"quiz"`
 	Points        int    `json:"points"`
 }
+
+type AllQuizQue struct {
+	Name string     `json:"name"`
+	Desc string     `json:"description"`
+	Ques []Question `json:"questions"`
+}

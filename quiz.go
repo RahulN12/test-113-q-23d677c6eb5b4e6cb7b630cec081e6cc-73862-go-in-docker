@@ -97,8 +97,8 @@ func GetQuestion(input string) (Question, string) {
 	return quiz, ""
 }
 
-func GetAllQuestion(input string) ([]Question, string) {
-	var quez []Question
+func GetAllQuestion(input string) (AllQuizQue, string) {
+	var quez AllQuizQue
 
 	id, err := strconv.Atoi(input)
 	if err != nil {
@@ -112,7 +112,7 @@ func GetAllQuestion(input string) ([]Question, string) {
 		return quez, "error connecting to db"
 	}
 
-	query := "SELECT question.id, question.name, question.options, question.correct_option as correctOption, question.quiz, question.points FROM quiz,question WHERE quiz.id = question.id and question.quiz = ?"
+	query := "SELECT quiz.name, quiz.description, question.id, question.name, question.options, question.correct_option as correctOption, question.quiz, question.points FROM quiz,question WHERE quiz.id = question.id and question.quiz = ?"
 	rows, err := db.Query(query, id)
 	if err != nil {
 		fmt.Println(err)
@@ -121,12 +121,17 @@ func GetAllQuestion(input string) ([]Question, string) {
 
 	for rows.Next() {
 		var quiz Question
-		err = rows.Scan(&quiz.Id, &quiz.Name, &quiz.Options, &quiz.CorrectOption, &quiz.Quiz, &quiz.Points)
+		var (
+			name, desc string
+		)
+		err = rows.Scan(&name, &desc, &quiz.Id, &quiz.Name, &quiz.Options, &quiz.CorrectOption, &quiz.Quiz, &quiz.Points)
 		if err != nil {
 			fmt.Println(err)
 			return quez, err.Error()
 		}
-		quez = append(quez, quiz)
+		quez.Ques = append(quez.Ques, quiz)
+		quez.Name = name
+		quez.Desc = desc
 	}
 
 	fmt.Println("Response is {}", quez)
