@@ -1,8 +1,14 @@
 -- +goose Up
 
-CREATE TABLE `accounts` (
-  `id` bigint(10) PRIMARY KEY,
-  `owner` varchar(10) NOT NULL,
-  `balance` bigint(10) NOT NULL,
-  `currency` varchar(10) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT now());
+  CREATE TABLE `quiz` (
+  `id` bigint(10) PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL);
+
+  CREATE TABLE `questions` (
+  `id` bigint(10) PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `options` varchar(255) NOT NULL,
+  `correct_option` bigint NOT NULL,
+  `quiz` bigint NOT NULL,
+  `points` bigint NOT NULL);
